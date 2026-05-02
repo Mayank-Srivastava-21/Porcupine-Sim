@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent-based Simulation Configuration</title>
+  <link rel="stylesheet" href="css/common.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.min.js"></script>
+</head>
+<body>
+  <div id="overlay" style="display: none;"></div>
+  <div id="agentParamsPopup" class="hidden">
+    <h3>Configure Agent Parameters</h3>
+    <form id="agentParamsForm"></form>
+    <div style="text-align: right; margin-top: 10px;">
+      <button id="saveAgentParams" aria-label="Save agent parameters">✔ Save</button>
+      <button id="closeAgentParamsPopup" aria-label="Close agent parameters popup">× Close</button>
+    </div>
+  </div>
+  <div id="graphPopup" class="hidden">
+    <button id="closeGraphPopup" aria-label="Close graph popup">×</button>
+    <button id="graphPopupDownload" class="icon download-icon" aria-label="Download zoomed graph">
+      <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+    </button>
+    <h3 id="graphPopupTitle"></h3>
+    <canvas id="graphPopupCanvas"></canvas>
+  </div>
+  <div id="simulationCompletePopup" class="hidden">
+    <button id="closeSimulationPopup" aria-label="Close simulation complete popup">×</button>
+    <h3>Simulation Complete</h3>
+    <div id="simulationCompleteInfo"></div>
+    <div style="text-align: center; margin-top: 20px;">
+      <label for="iterationSelect">Select Iteration:</label>
+      <select id="iterationSelect" aria-label="Select iteration for download">
+        <option value="all">All</option>
+      </select>
+      <div id="simulationCompleteButtonContainer"></div>
+    </div>
+  </div>
+
+  <div id="mainContainer">
+    <div id="configPanel">
+      <h2>Simulation Configuration</h2>
+      <form id="configForm">
+        <label for="algorithm">Algorithm:</label>
+        <select id="algorithm" name="agentParamsTable" aria-label="Select simulation algorithm">
+          <option value="q_learning">Q-Learning</option>
+          <option value="rule_based">Rule-Based</option>
+        </select>
+        <label for="numAgents">Number of Agents:</label>
+        <input type="number" id="numAgents" name="num_agents" value="20" min="1" aria-label="Number of agents">
+        <table id="agentParamsTable" aria-label="Agent parameters table">
+          <thead>
+            <tr>
+              <th>Agent ID</th>
+              <th>Body Heat</th>
+              <th>Cold Tolerance</th>
+              <th>Pain Tolerance</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <button type="button" id="configureAgentsBtn" aria-label="Configure agent parameters">Configure Agents</button>
+        <label for="gridWidth">Grid Width (cells):</label>
+        <input type="number" id="gridWidth" name="grid_width" value="50" min="10" aria-label="Grid width in cells">
+        <label for="gridHeight">Grid Height (cells):</label>
+        <input type="number" id="gridHeight" name="grid_height" value="50" min="10" aria-label="Grid height in cells">
+        <label for="cellSize">Cell Size (pixels):</label>
+        <input type="number" id="cellSize" value="10" min="10" max="50" aria-label="Cell size in pixels">
+        <label for="ambientTemp">Ambient Temperature:</label>
+        <input type="number" id="ambientTemp" name="ambientTemp" value="-10" step="0.1" min="-25" max="40" aria-label="Ambient temperature">
+        <label for="iterations">No. of Iterations:</label>
+        <input type="number" id="iterations" name="iterations" value="1" min="1" aria-label="Number of iterations">
+        <label for="steps">Simulation Steps:</label>
+        <input type="number" id="steps" name="steps" value="100000" min="1" aria-label="Number of simulation steps">
+        <button type="button" id="startBtn" aria-label="Start simulation">Start Simulation</button>
+        <button type="button" id="downloadCSV" aria-label="Download CSV data">Download CSV Data</button>
+        <div id="progress" aria-live="polite">
+          <span id="progressText"></span>
+        </div>
+      </form>
+    </div>
+
+    <div id="simGraphContainer">
+      <div style="display: flex; flex-direction: row; gap: 20px;">
+        <div id="simulationContainer">
+          <canvas id="simulationCanvas" width="500" height="500" aria-label="Simulation grid"></canvas>
+          <table id="iterationStatusTable" aria-label="Iteration status table">
+            <thead>
+              <tr>
+                <th>Iteration</th>
+                <th>Status</th>
+                <th>Time Taken</th>
+                <th>Download</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <div id="painLegend">
+            <canvas id="painLegendCanvas" width="502" height="30" aria-label="Pain levels legend"></canvas>
+          </div>
+        </div>
+        <div id="graphContainer">
+          <div id="distanceContainer">
+            <button id="distanceZoom" class="icon zoom-in-icon" aria-label="Zoom average distance graph">
+              <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 A6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19 l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14zm-2-4h2v2H7.5V10zm4 0h2v2h-2V10z"/></svg>
+            </button>
+            <button id="distanceDownload" class="icon download-icon" aria-label="Download average distance graph">
+              <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+            </button>
+            <canvas id="distanceCanvas" width="500" height="200" aria-label="Average distance graph"></canvas>
+          </div>
+          <div id="painStateContainer">
+            <button id="painStateZoom" class="icon zoom-in-icon" aria-label="Zoom average orientation difference graph">
+              <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 A6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19 l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14zm-2-4h2v2H7.5V10zm4 0h2v2h-2V10z"/></svg>
+            </button>
+            <button id="painStateDownload" class="icon download-icon" aria-label="Download average orientation difference graph">
+              <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+            </button>
+            <canvas id="painStateCanvas" width="500" height="200" aria-label="Average orientation difference graph"></canvas>
+          </div>
+          <div id="rewardContainer">
+            <button id="rewardZoom" class="icon zoom-in-icon" aria-label="Zoom average total reward graph">
+              <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 A6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19 l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14zm-2-4h2v2H7.5V10zm4 0h2v2h-2V10z"/></svg>
+            </button>
+            <button id="rewardDownload" class="icon download-icon" aria-label="Download average total reward graph">
+              <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+            </button>
+            <canvas id="rewardCanvas" width="500" height="200" aria-label="Average total reward graph"></canvas>
+          </div>
+          <div id="clustersContainer" class="hidden">
+            <button id="clustersZoom" class="icon zoom-in-icon" aria-label="Zoom clusters graph">
+              <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 A6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19 l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14zm-2-4h2v2H7.5V10zm4 0h2v2h-2V10z"/></svg>
+            </button>
+            <button id="clustersDownload" class="icon download-icon" aria-label="Download clusters graph">
+              <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+            </button>
+            <canvas id="clustersCanvas" width="500" height="200" aria-label="Clusters graph"></canvas>
+          </div>
+          <table id="rewardTable" aria-label="Reward metrics table" aria-live="polite">
+            <thead>
+              <tr>
+                <th>Total Reward</th>
+                <th>Pain Reward</th>
+                <th>Temperature Reward</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td id="totalReward">0.00</td>
+                <td id="painReward">0.00</td>
+                <td id="tempReward">0.00</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    #progressText strong {
+      font-weight: bold;
+    }
+  </style>
+
+  <script type="module" src="./js/agent_based/environment.js"></script>
+  <script type="module" src="./js/agent_based/globals.js"></script>
+  <script type="module" src="./js/agent_based/simulation.js"></script>
+  <script type="module" src="./js/agent_based/ui.js"></script>
+  <script type="module" src="./js/agent_based/visualization.js"></script>
+  <script type="module" src="./js/q_learning.js"></script>
+</body>
+</html>
