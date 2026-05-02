@@ -64,7 +64,7 @@ This simulation brings this philosophical concept to life through computational 
    # Or use a local server (recommended):
      python -m http.server 8000
    # Then navigate to http://localhost:8000
-# Project Structure
+## Project Structure
 Porcupine-Sim/
 │
 ├── index.html                    # Main HTML file with UI structure
@@ -113,8 +113,8 @@ Porcupine-Sim/
                                     - Pain legend
                                     - Agent visualization
 
-## If you use this software, in whole or in part, for academic, research, or public projects, you agree to cite this repository as follows:
+### If you use this software, in whole or in part, for academic, research, or public projects, you agree to cite this repository as follows:
 Mayank-Srivastava-21. (2026). Porcupine-Sim: An Interactive Agent-Based Simulation 
 of Social Behavior. GitHub repository. https://github.com/Mayank-Srivastava-21/Porcupine-Sim
-## Simulation Link: https://porcupine-simulation.netlify.app/
-## For any issues or queries, contact @mayanks23@iiserb.ac.in and @pragati23@iiserb.ac.in
+### Simulation Link: https://porcupine-simulation.netlify.app/
+### For any issues or queries, contact @mayanks23@iiserb.ac.in and @pragati23@iiserb.ac.in
