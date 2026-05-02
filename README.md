@@ -60,11 +60,14 @@ This simulation brings this philosophical concept to life through computational 
    git clone https://github.com/Mayank-Srivastava-21/Porcupine-Sim.git
    cd Porcupine-Sim
 2. **Open in browser**
-   # Simply open index.html in your web browser
-   # Or use a local server (recommended):
+   ## Simply open index.html in your web browser
+   ## Or use a local server (recommended):
      python -m http.server 8000
-   # Then navigate to http://localhost:8000
+   ## Then navigate to http://localhost:8000
+   
 ## Project Structure
+
+```text
 Porcupine-Sim/
 │
 ├── index.html                    # Main HTML file with UI structure
@@ -112,7 +115,7 @@ Porcupine-Sim/
                                     - Real-time graphs
                                     - Pain legend
                                     - Agent visualization
-
+```
 ### If you use this software, in whole or in part, for academic, research, or public projects, you agree to cite this repository as follows:
 Mayank-Srivastava-21. (2026). Porcupine-Sim: An Interactive Agent-Based Simulation 
 of Social Behavior. GitHub repository. https://github.com/Mayank-Srivastava-21/Porcupine-Sim
