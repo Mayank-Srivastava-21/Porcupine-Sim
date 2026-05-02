@@ -60,11 +60,12 @@ This simulation brings this philosophical concept to life through computational 
    git clone https://github.com/Mayank-Srivastava-21/Porcupine-Sim.git
    cd Porcupine-Sim
 2. **Open in browser**
+   ```text
     Simply open index.html in your web browser
     Or use a local server (recommended):
      python -m http.server 8000
     Then navigate to http://localhost:8000
-   
+   ```
 ## Project Structure
 
 ```text
