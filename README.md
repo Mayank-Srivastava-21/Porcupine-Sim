@@ -1,4 +1,4 @@
-# Porcupine-Sim
+# Porcupine-Simulation
 
 **An Interactive Agent-Based Simulation of Social Behavior inspired by Schopenhauer's Porcupine's Dilemma**
 
