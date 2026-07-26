@@ -1,5 +1,7 @@
 # Porcupine-Simulation
 
+In proceedings of the **48th annual meeting of the Cognitive Science Society (CogSci), 2026, Rio de Janeiro, Brazil.**
+
 **An Interactive Agent-Based Simulation of Social Behavior inspired by Schopenhauer's Porcupine's Dilemma**
 
 ## Overview
