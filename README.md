@@ -119,8 +119,13 @@ Porcupine-Sim/
                                     - Pain legend
                                     - Agent visualization
 ```
-### If you use this software, in whole or in part, for academic, research, or public projects, you agree to cite this repository as follows:
-Mayank-Srivastava-21. (2026). Porcupine-Sim: An Interactive Agent-Based Simulation 
-of Social Behavior. GitHub repository. https://github.com/Mayank-Srivastava-21/Porcupine-Sim
+### If you use this software/simulation, in whole or in part, for academic, research, or public projects, you agree to cite this as follows:
+@inproceedings{srivastava2026mental,
+  title={Mental disorders emerge from the gut microbiome gradually transitioning from a symbiotic to a parasitic state: a 4E cognition approach to computational psychiatry},
+  author={Srivastava, Mayank and Nayak, Pragati and Makwana, Mukesh and Chandrasekharan, Sanjay},
+  booktitle={Proceedings of the Annual Meeting of the Cognitive Science Society},
+  volume={48},
+  year={2026}
+}
 ### Simulation Link: https://porcupine-simulation.netlify.app/
 ### For any issues or queries, contact @mayanks23@iiserb.ac.in and @pragati23@iiserb.ac.in
