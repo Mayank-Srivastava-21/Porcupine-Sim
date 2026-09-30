@@ -1,8 +1,6 @@
-# Porcupine-Simulation
+**Mental disorders emerge from the gut microbiome gradually transitioning from a symbiotic to a parasitic state: a 4E cognition approach to computational psychiatry**
 
 In proceedings of the **48th annual meeting of the Cognitive Science Society (CogSci), 2026, Rio de Janeiro, Brazil.**
-
-**Mental disorders emerge from the gut microbiome gradually transitioning from a symbiotic to a parasitic state: a 4E cognition approach to computational psychiatry**
 
 **Link:** https://escholarship.org/uc/item/3gn328vw
 
